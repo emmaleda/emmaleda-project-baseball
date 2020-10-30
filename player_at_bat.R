@@ -54,8 +54,9 @@ half_inning(3)
 # notes: 
 # 1. n_players needs to be motified so that it restarts with 
 #    player 1 once player 9 has hit
-# 2. currently, we've recorded whether a player has hit the
-#    ball, which means we know they made it to a base, but
+# 2. currently, we've recorded whether a player has not made an out,
+#    which means we know they made it to a base, but
 #    just because they made it to a base, doesn't mean they 
 #    scored a run, so this needs to be modified as well
-
+# 3. we'll stick to base to base to start with scoring runs, so any value
+#    above 4 would represent (n - 4) runs scored before an inning ends
