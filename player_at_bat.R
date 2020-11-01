@@ -16,7 +16,7 @@ n_players <- length(PadresBatting$OBP)
 
 # second function, to record an inning
 half_inning <- function(starting_player) {
-  number_hits <- list() 
+  number_hits <- rep(0,9)
   ### a list to store how many hits each player scores
   outs = 0 
   ### number of outs the team scores, starts at 0 outs for each inning
@@ -27,11 +27,16 @@ half_inning <- function(starting_player) {
     ### so we'll start where we ended, which is why 'starting_player'
     ### is an option to fill in
     if(outs < 3){
+      hit <- get_hit(PadresBatting$OBP[i])
       ### we need to stop running the simulation once we've made 3 outs
       ### so the function stops once 3 outs have been reached
-      number_hits[i] <- get_hit(PadresBatting$OBP[i])
+      number_hits[i] <- number_hits[i] + hit
       ### here, we record if a player achieves a hit
-      if(number_hits[i] == 0){
+      ### by adding the previous number of hits (starts at 0)
+      ### to whether they get a hit or not
+      ### we add the previous number of hits just in case
+      ### a player hits more than once per inning
+      if(hit == 0){
         ### records how many outs for the team
         outs = outs + 1
       }
@@ -49,8 +54,9 @@ half_inning <- function(starting_player) {
     for(i in 1:n_players){
       ### starts at the first player (Tatis Jr.!)
       if(outs < 3){
-        number_hits[i] <- get_hit(PadresBatting$OBP[i])
-        if(number_hits[i] == 0){
+        hit <- get_hit(PadresBatting$OBP[i])
+        number_hits[i] <- number_hits[i] + hit
+        if(hit == 0){
           outs = outs + 1
         }
         player <- i
@@ -74,6 +80,9 @@ half_inning(9)
 # notes: 
 # 1. n_players needs to be motified so that it restarts with 
 #    player 1 once player 9 has hit
+#     -> complete
+#        and we now have a solution for what to do if a player
+#        bats twice in one inning
 # 2. currently, we've recorded whether a player has not made an out,
 #    which means we know they made it to a base, but
 #    just because they made it to a base, doesn't mean they 
