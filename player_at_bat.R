@@ -17,39 +17,59 @@ n_players <- length(PadresBatting$OBP)
 # second function, to record an inning
 half_inning <- function(starting_player) {
   number_hits <- list() 
-    ### a list to store how many hits each player scores
+  ### a list to store how many hits each player scores
   outs = 0 
-    ### number of outs the team scores, starts at 0 outs for each inning
+  ### number of outs the team scores, starts at 0 outs for each inning
   for(i in starting_player:n_players){
-     ### the for loop begins at the starting player, at the beginning of the
-     ### game, we'll start with the first player (Tatis Jr.!)
-     ### but as the game continues, we'll end at different players
-     ### so we'll start where we ended, which is why 'starting_player'
-     ### is an option to fill in
+    ### the for loop begins at the starting player, at the beginning of the
+    ### game, we'll start with the first player (Tatis Jr.!)
+    ### but as the game continues, we'll end at different players
+    ### so we'll start where we ended, which is why 'starting_player'
+    ### is an option to fill in
     if(outs < 3){
       ### we need to stop running the simulation once we've made 3 outs
       ### so the function stops once 3 outs have been reached
-    number_hits[i] <- get_hit(PadresBatting$OBP[i])
-       ### here, we record if a player achieves a hit
-    if(number_hits[i] == 0){
+      number_hits[i] <- get_hit(PadresBatting$OBP[i])
+      ### here, we record if a player achieves a hit
+      if(number_hits[i] == 0){
         ### records how many outs for the team
-      outs = outs + 1
-    }
-    player <- i
-     ### records the number of the last player who hits
-     ### for the next inning, we'll want to start at the next player
-     ### so player + 1
+        outs = outs + 1
+      }
+      player <- i
+      ### records the number of the last player who hits
+      ### for the next inning, we'll want to start at the next player
+      ### so player + 1
     }
   }
-  return(c(sum(unlist(number_hits)), player))
-   ### the function returns the number of hits
-   ### and the player who was batting when the last
-   ### out occured
+  if(player == 9){
+    ### the previous loop with end once we reach player 9, but that's not
+    ### how baseball works since we'd restart with player 1 if player 9 hit
+    ### and they hadn't reached 3 outs yet; so, if the player is 9 the 
+    ### exact same loop as above runs except that it starts at 1
+    for(i in 1:n_players){
+      ### starts at the first player (Tatis Jr.!)
+      if(outs < 3){
+        number_hits[i] <- get_hit(PadresBatting$OBP[i])
+        if(number_hits[i] == 0){
+          outs = outs + 1
+        }
+        player <- i
+      }
+    }  
+  }
+  hits_and_player <- data.frame(hits = sum(unlist(number_hits)), 
+                                last_player = player)
+  return(hits_and_player)
+  ### the function returns a data frame of the number of hits
+  ### and the player who was batting when the last
+  ### out occured
 }
 
 ## examples
 half_inning(1)
 half_inning(3)
+half_inning(9)
+
 
 # notes: 
 # 1. n_players needs to be motified so that it restarts with 
@@ -60,3 +80,4 @@ half_inning(3)
 #    scored a run, so this needs to be modified as well
 # 3. we'll stick to base to base to start with scoring runs, so any value
 #    above 4 would represent (n - 4) runs scored before an inning ends
+
