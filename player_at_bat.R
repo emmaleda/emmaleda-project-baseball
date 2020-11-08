@@ -13,7 +13,23 @@ get_hit(PadresBatting$OBP[1])
 # number of players:
 n_players <- length(PadresBatting$OBP)
 
-
+#third function to record runs per inning 
+runs <- function(number_hits){
+  if(number_hits < 4){
+    runs = 0
+  }
+  #### if less than four hits occur in an inning then no runs score
+  else{
+    runs = number_hits - 3
+    ### if more than three hits occur in an inning then the number of runs
+    ### scored is that number of hits minus the three runners who occupy
+    ### the three bases (first, second, third)
+  }
+}
+a <- runs(2)
+b <- runs(5)
+c <- runs(0)
+d <- runs(11)
 # second function, to record an inning
 half_inning <- function(starting_player) {
   number_hits <- rep(0,9)
@@ -63,13 +79,18 @@ half_inning <- function(starting_player) {
       }
     }  
   }
-  hits_and_player <- data.frame(hits = sum(unlist(number_hits)), 
-                                last_player = player)
+  hits = sum(unlist(number_hits))
+  hits_and_player <- data.frame(hits = hits, 
+                                last_player = player,
+                                runs = runs(hits))
   return(hits_and_player)
   ### the function returns a data frame of the number of hits
   ### and the player who was batting when the last
   ### out occured
 }
+
+
+
 
 ## examples
 half_inning(1)
@@ -88,7 +109,7 @@ half_inning(9)
 #    just because they made it to a base, doesn't mean they 
 #    scored a run, so this needs to be modified as well
 # 3. we'll stick to base to base to start with scoring runs, so any value
-#    above 4 would represent (n - 4) runs scored before an inning ends
+#    above 3 would represent (n - 3) runs scored before an inning ends
 
  
 
