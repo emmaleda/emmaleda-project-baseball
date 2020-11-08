@@ -26,6 +26,7 @@ runs <- function(number_hits){
     ### the three bases (first, second, third)
   }
 }
+#test of the runs function
 a <- runs(2)
 b <- runs(5)
 c <- runs(0)
@@ -89,7 +90,14 @@ half_inning <- function(starting_player) {
   ### out occured
 }
 
-
+game <- function(half_inning){
+  if(sum(runs) < 5){
+    game = 0
+  }
+  else{
+    game = 1
+  }
+}
 
 
 ## examples
@@ -97,6 +105,7 @@ half_inning(1)
 half_inning(3)
 half_inning(9)
 
+game(half_inning)
 
 # notes: 
 # 1. n_players needs to be motified so that it restarts with 
@@ -108,8 +117,15 @@ half_inning(9)
 #    which means we know they made it to a base, but
 #    just because they made it to a base, doesn't mean they 
 #    scored a run, so this needs to be modified as well
+#     -> complete
 # 3. we'll stick to base to base to start with scoring runs, so any value
 #    above 3 would represent (n - 3) runs scored before an inning ends
-
+# 4. because runs right now are counted as whole numbers based on hits per
+#    inning being above 3, the expected runs per game that the Padres
+#    pitchers gave up will be rounded up to 5, so scoring 5 or more runs
+#    results in a win
+# 5. this should eventually be modified using a randomized test so that
+#    13% of the time when the Padres score exactly 4 runs they get a win,
+#    since the Padres gave up 4.87 runs per game in 2019
  
 
