@@ -90,22 +90,48 @@ half_inning <- function(starting_player) {
   ### out occured
 }
 
-game <- function(half_inning){
-  if(sum(runs) < 5){
-    game = 0
-  }
-  else{
-    game = 1
-  }
-}
-
-
 ## examples
 half_inning(1)
 half_inning(3)
 half_inning(9)
 
-game(half_inning)
+# game <- function(half_inning){
+#   if(sum(runs) < 5){
+#     game = 0
+#   }
+#   else{
+#     game = 1
+#   }
+# }
+
+
+game <- function() {
+  first_inning   <- half_inning(starting_player = 1)
+  second_inning  <- half_inning(starting_player = first_inning$last_player)
+  third_inning   <- half_inning(starting_player = second_inning$last_player)
+  fourth_inning  <- half_inning(starting_player = third_inning$last_player)
+  fifth_inning   <- half_inning(starting_player = fourth_inning$last_player)
+  sixth_inning   <- half_inning(starting_player = fifth_inning$last_player)
+  seventh_inning <- half_inning(starting_player = sixth_inning$last_player)
+  eighth_inning  <- half_inning(starting_player = seventh_inning$last_player)
+  nineth_inning  <-  half_inning(starting_player = eighth_inning$last_player)
+  
+  total_game_runs <-
+    first_inning$runs + second_inning$runs + third_inning$runs + fourth_inning$runs + fifth_inning$runs +
+    sixth_inning$runs + seventh_inning$runs + eighth_inning$runs + nineth_inning$runs
+  won <- list()
+  if (total_game_runs > 5) {
+    won = 1
+  } else if (total_game_runs == 4) {
+    won = rbinom(1, 1, 0.13)
+  } else {
+    won = 0
+  }
+  return(unlist(won))
+}
+
+
+game()
 
 # notes: 
 # 1. n_players needs to be motified so that it restarts with 
