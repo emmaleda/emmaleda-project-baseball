@@ -1,5 +1,6 @@
 
 library(readr)
+library(tidyverse)
 PadresBatting <- read_csv("PadresBatting.csv")
 
 # first function, for a single at bat
@@ -95,16 +96,7 @@ half_inning(1)
 half_inning(3)
 half_inning(9)
 
-# game <- function(half_inning){
-#   if(sum(runs) < 5){
-#     game = 0
-#   }
-#   else{
-#     game = 1
-#   }
-# }
-
-
+#simulation of an entire game
 game <- function() {
   first_inning   <- half_inning(starting_player = 1)
   second_inning  <- half_inning(starting_player = first_inning$last_player)
@@ -120,7 +112,7 @@ game <- function() {
     first_inning$runs + second_inning$runs + third_inning$runs + fourth_inning$runs + fifth_inning$runs +
     sixth_inning$runs + seventh_inning$runs + eighth_inning$runs + nineth_inning$runs
   won <- list()
-  if (total_game_runs > 5) {
+  if (total_game_runs >= 5) {
     won = 1
   } else if (total_game_runs == 4) {
     won = rbinom(1, 1, 0.13)
@@ -132,6 +124,20 @@ game <- function() {
 
 
 game()
+
+#simulation of an entire season
+season <- function(){
+  finalgamescore <- rep(0, 162)
+  for(i in 1:162){
+    finalgamescore[i] <- game()
+    # print(finalgamescore[i])
+  }
+  return(sum(finalgamescore))
+}
+season()
+
+seasonsim <- map_dbl(1:100, ~season())
+hist(seasonsim)
 
 # notes: 
 # 1. n_players needs to be motified so that it restarts with 
