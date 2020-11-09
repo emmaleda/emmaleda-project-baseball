@@ -112,10 +112,10 @@ game <- function() {
     first_inning$runs + second_inning$runs + third_inning$runs + fourth_inning$runs + fifth_inning$runs +
     sixth_inning$runs + seventh_inning$runs + eighth_inning$runs + nineth_inning$runs
   won <- list()
-  if (total_game_runs >= 5) {
+  if (total_game_runs >= 3) {
     won = 1
-  } else if (total_game_runs == 4) {
-    won = rbinom(1, 1, 0.13)
+  } else if (total_game_runs == 2) {
+    won = rbinom(1, 1, 0.08)
   } else {
     won = 0
   }
