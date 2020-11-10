@@ -96,17 +96,28 @@ half_inning(1)
 half_inning(3)
 half_inning(9)
 
+# create a function so that when we move on to the next player
+# if we end at player 9, it doesn't try to go to player 10
+next_player <- function(last_player){
+  next_player <- 0
+  if(last_player < 9){
+    next_player = last_player + 1
+  } else {next_player = 1}
+  return(next_player)
+}
+next_player(9)
+
 #simulation of an entire game
 game <- function() {
   first_inning   <- half_inning(starting_player = 1)
-  second_inning  <- half_inning(starting_player = first_inning$last_player)
-  third_inning   <- half_inning(starting_player = second_inning$last_player)
-  fourth_inning  <- half_inning(starting_player = third_inning$last_player)
-  fifth_inning   <- half_inning(starting_player = fourth_inning$last_player)
-  sixth_inning   <- half_inning(starting_player = fifth_inning$last_player)
-  seventh_inning <- half_inning(starting_player = sixth_inning$last_player)
-  eighth_inning  <- half_inning(starting_player = seventh_inning$last_player)
-  nineth_inning  <-  half_inning(starting_player = eighth_inning$last_player)
+  second_inning  <- half_inning(starting_player = next_player(first_inning$last_player))
+  third_inning   <- half_inning(starting_player = next_player(second_inning$last_player))
+  fourth_inning  <- half_inning(starting_player = next_player(third_inning$last_player))
+  fifth_inning   <- half_inning(starting_player = next_player(fourth_inning$last_player))
+  sixth_inning   <- half_inning(starting_player = next_player(fifth_inning$last_player))
+  seventh_inning <- half_inning(starting_player = next_player(sixth_inning$last_player))
+  eighth_inning  <- half_inning(starting_player = next_player(seventh_inning$last_player))
+  nineth_inning  <- half_inning(starting_player = next_player(eighth_inning$last_player))
   
   total_game_runs <-
     first_inning$runs + second_inning$runs + third_inning$runs + fourth_inning$runs + fifth_inning$runs +
@@ -138,6 +149,7 @@ season()
 
 seasonsim <- map_dbl(1:100, ~season())
 hist(seasonsim)
+
 
 # notes: 
 # 1. n_players needs to be motified so that it restarts with 
