@@ -32,6 +32,28 @@ a <- runs(2)
 b <- runs(5)
 c <- runs(0)
 d <- runs(11)
+
+# If a player doesn't get an out, which base do they reach?
+base_reached <- function(player){
+  ### this code I largely borrowed from homework 4 02_random-numbers
+  ### since the probability a player makes it to first, second, third 
+  ### or home is mutually exclusing
+  values <- c(1, 2, 3, 4)
+  probs <- c(PadresBatting$First[player], PadresBatting$Second[player],
+             PadresBatting$Third[player], PadresBatting$Home[player])
+  cumulative_probs <- cumsum(probs)
+  
+  u <- runif(1)
+  ### generates one randome number between 0 and 1
+  values[findInterval(u, cumulative_probs) + 1] 
+  ### figures out where that u falls within the cumulative
+  ### probability and returns 1, 2, 3, or 4 based on what u is
+}
+
+# example
+base_reached(1)
+
+
 # second function, to record an inning
 half_inning <- function(starting_player) {
   number_hits <- rep(0,9)
@@ -48,6 +70,11 @@ half_inning <- function(starting_player) {
       hit <- get_hit(PadresBatting$OBP[i])
       ### we need to stop running the simulation once we've made 3 outs
       ### so the function stops once 3 outs have been reached
+      if(hit == 1){
+        hit <- base_reached(i)
+        ### if the player does get a hit, base_reached(player) will determine
+        ### which base they make it to
+      }
       number_hits[i] <- number_hits[i] + hit
       ### here, we record if a player achieves a hit
       ### by adding the previous number of hits (starts at 0)
@@ -55,8 +82,8 @@ half_inning <- function(starting_player) {
       ### we add the previous number of hits just in case
       ### a player hits more than once per inning
       if(hit == 0){
-        ### records how many outs for the team
         outs = outs + 1
+        ### records how many outs for the team
       }
       player <- i
       ### records the number of the last player who hits
@@ -73,6 +100,9 @@ half_inning <- function(starting_player) {
       ### starts at the first player (Tatis Jr.!)
       if(outs < 3){
         hit <- get_hit(PadresBatting$OBP[i])
+        if(hit == 1){
+          hit <- base_reached(i)
+        }
         number_hits[i] <- number_hits[i] + hit
         if(hit == 0){
           outs = outs + 1
@@ -86,9 +116,6 @@ half_inning <- function(starting_player) {
                                 last_player = player,
                                 runs = runs(hits))
   return(hits_and_player)
-  ### the function returns a data frame of the number of hits
-  ### and the player who was batting when the last
-  ### out occured
 }
 
 ## examples
@@ -123,10 +150,10 @@ game <- function() {
     first_inning$runs + second_inning$runs + third_inning$runs + fourth_inning$runs + fifth_inning$runs +
     sixth_inning$runs + seventh_inning$runs + eighth_inning$runs + nineth_inning$runs
   won <- list()
-  if (total_game_runs >= 3) {
+  if (total_game_runs >= 5) {
     won = 1
-  } else if (total_game_runs == 2) {
-    won = rbinom(1, 1, 0.08)
+  } else if (total_game_runs == 4) {
+    won = rbinom(1, 1, 0.13)
   } else {
     won = 0
   }
@@ -171,5 +198,6 @@ hist(seasonsim)
 # 5. this should eventually be modified using a randomized test so that
 #    13% of the time when the Padres score exactly 4 runs they get a win,
 #    since the Padres gave up 4.87 runs per game in 2019
+#    -> complete
  
 
