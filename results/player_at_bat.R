@@ -12,7 +12,7 @@ get_hit <- function(OBP) {
 get_hit(PadresBatting$OBP[1])
 
 # number of players:
-n_players <- length(PadresBatting$OBP)
+n_players <- 9
 
 #third function to record runs per inning 
 runs <- function(number_hits){
