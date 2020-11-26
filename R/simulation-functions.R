@@ -145,10 +145,10 @@ game <- function() {
   ### "total_game_runs" adds up all of the runs that the Padres scored each inning
   won <- list()
   ### initialize an empty list
-  if (total_game_runs >= 5) {
+  if (total_game_runs >= 6) {
     ### if the Padres scored 5 or more runs, they win the game
     won = 1
-  } else if (total_game_runs == 4) {
+  } else if (total_game_runs == 5) {
     ### if the Padres score exactly 4 runs, they "win" 13% of the time
     ### as calculated by the binomial below
     won = rbinom(1, 1, 0.13)
