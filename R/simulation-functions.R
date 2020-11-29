@@ -143,7 +143,7 @@ game <- function() {
     first_inning$runs + second_inning$runs + third_inning$runs + fourth_inning$runs + fifth_inning$runs +
     sixth_inning$runs + seventh_inning$runs + eighth_inning$runs + nineth_inning$runs
   ### "total_game_runs" adds up all of the runs that the Padres scored each inning
-  won <- list()
+  won <- 0
   ### initialize an empty list
   if (total_game_runs >= 6) {
     ### if the Padres scored 5 or more runs, they win the game
