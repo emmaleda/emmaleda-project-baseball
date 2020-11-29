@@ -161,6 +161,7 @@ game <- function() {
   return(unlist(won))
 }
 
+
 ### 7. season
 season <- function(){
   finalgamescore <- rep(0, 162)
