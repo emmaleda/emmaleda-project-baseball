@@ -2,12 +2,8 @@
 devtools::load_all()
 
 library(tidyverse)
+library(here)
 
-seasonsim <- map_dbl(1:250, ~season())
+seasonsim <- data.frame(season = map_dbl(1:250, ~season()))
 
-ggplot()+
-  geom_histogram(aes(x = seasonsim), col = "yellow", fill = "brown") +
-  xlab("Wins in a Season") +
-  ggtitle("Simulation of the Padres 2019 Season")
-
-mean(seasonsim)
+write_csv(seasonsim, here("data","seasonsim.csv"))
