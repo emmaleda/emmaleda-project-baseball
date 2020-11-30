@@ -1,11 +1,29 @@
 
 
 ### 1. get_hit
+#' Simulates if a player got a hit
+#'
+#' @param OBP double, the On-base Percentage of a player
+#'
+#' @return 0 or 1, if a player gets on base a 1 is returned. if they get out a 0 is returned
+#' @export
+#'
+#' @examples get_hit(.300)
 get_hit <- function(OBP) {
   rbinom(1,1, OBP)
 }
+?get_hit
 
 ### 2. runs
+#' Runs scored in an Inning
+#'
+#' @param number_hits an integer, the sum of all the bases each player made it to during an Inning
+#'
+#' @return an integer, the calculated number of runs scored for the team during a half-Inning
+#' @export
+#'
+#' @examples runs(3)
+#' runs(4)
 runs <- function(number_hits){
   if(number_hits < 4){
     runs = 0
@@ -18,6 +36,7 @@ runs <- function(number_hits){
     ### the three bases (first, second, third)
   }
 }
+?runs
 
 ### 2.5 import the data
 PadresBatting <- readr::read_csv(here::here("data", "PadresBatting.csv"))
@@ -25,6 +44,15 @@ PadresBatting <- readr::read_csv(here::here("data", "PadresBatting.csv"))
 
 ### 3. base_reached
 ### If a player doesn't get an out, which base do they reach?
+#' Which base does a player who obtains a hit reach?
+#'
+#' @param player an integer from 1 to 9 which indicates which player to retrieve statistics about from the PadresBatting.csv data file
+#'
+#' @return 1, 2, 3 or 4 indicating which base a player made it to
+#' @export
+#'
+#' @examples base_reached(1)
+#' base_reached(2)
 base_reached <- function(player){
   ### this code I largely borrowed from homework 4 02_random-numbers
   ### since the probability a player makes it to first, second, third 
@@ -40,8 +68,20 @@ base_reached <- function(player){
   ### figures out where that u falls within the cumulative
   ### probability and returns 1, 2, 3, or 4 based on what u is
 }
+?base_reached
 
 ### 4. half_inning
+#' Simulates the batting order of the Padres for a half-inning
+#'
+#' @param starting_player an integer, which player begins the Inning at bat
+#'
+#' @return a list with values, hits = total hits acheived by each player, 
+#' last_player = the player who hit right before the inning ended, 
+#' and runs = the total runs scored by all the players
+#' @export
+#'
+#' @examples half_inning(1)
+#' half_inning(9)
 half_inning <- function(starting_player) {
   number_hits <- rep(0,9)
   ### a list to store how many hits each player scores
@@ -106,9 +146,19 @@ half_inning <- function(starting_player) {
                                 runs = runs(hits))
   return(hits_and_player)
 }
+?half_inning
 
 
 ### 5. next_player
+#' Iterate to the Next Player in the Lineup
+#'
+#' @param last_player an integer from 1 to 9 corresponding with placement in the starting lineup
+#'
+#' @return if last_player is 9, it returns 1 otherwise it returns last_player + 1
+#' @export
+#'
+#' @examples next_player(1)
+#' next_player(9)
 next_player <- function(last_player){
   next_player <- 0
   ### initialize a variable called "next_player" and set it to 0
@@ -121,8 +171,15 @@ next_player <- function(last_player){
   ### player 1, not player 10 (who doesn't exist)
   return(next_player)
 }
+?next_player
 
 ### 6. game
+#' Simulates One Game for the Padres
+#'
+#' @return an integer, 0 if they lost the game and 1 if they won
+#' @export
+#'
+#' @examples game()
 game <- function() {
   first_inning   <- half_inning(starting_player = 1)
   ### the first player will always be player 1 (in the Padres case, Tatis Jr.)
@@ -163,6 +220,12 @@ game <- function() {
 
 
 ### 7. season
+#' Simulates One Season (based on 2019 stats) for the Padres
+#'
+#' @return an integer, the number of games won
+#' @export
+#'
+#' @examples season()
 season <- function(){
   finalgamescore <- rep(0, 162)
   for(i in 1:162){
