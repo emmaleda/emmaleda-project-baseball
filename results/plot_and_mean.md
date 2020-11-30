@@ -12,7 +12,7 @@ seasonsim <- read_csv(here("data","seasonsim.csv"))
 
 ``` r
 ggplot()+
-  geom_histogram(aes(x = seasonsim$season), col = "yellow", fill = "brown") +
+  geom_histogram(aes(x = seasonsim$season), fill = "sienna4", color = "yellow") +
   xlab("Wins in a Season") +
   ggtitle("Simulation of the Padres 2019 Season")
 ```
