@@ -3,6 +3,12 @@
 #'
 #' @param data dataframe with 9 rows; Must have columns named "OBP", "First", "Second", "Third" and "Home" in which the values are probabilites;
 #'             the probabilities provided in "First", "Second", "Third" and "Home" should add to 1 for each player
+#' @param OBP column of length 9 that has each player's on-base percentage
+#' @param First column of length 9 that has each player's probability of getting to First base
+#' @param Second column of length 9 that has each player's probability of getting to Second base
+#' @param Third column of length 9 that has each player's probability of getting to Third base
+#' @param Home column of length 9 that has each player's probability of getting to Home base
+#' @param avg_runs_allowed a numeric value that is the average runs allowed by a team per game  
 #'
 #' @return The value is a double, either zero or one, in which zero indicates they lost and one indicates they won
 #' @export
@@ -11,8 +17,10 @@
 #'                               First = c(0.7416, 0.6241, 0.7442, 0.7402, 0.7405, 0.7355, 0.7098, 0.7951, 0.8465),
 #'                               Second = c(0.1005, 0.1348, 0.0977, 0.1422, 0.1450, 0.1419, 0.0933, 0.1220, 0.1080),
 #'                               Third = c(0.0335, 0.0071, 0.0093, 0.0098, 0.0229, 0.0065, 0.0000, 0.0195, 0.0000),
-#'                               Home = c(0.1244, 0.2340, 0.1488, 0.1078, 0.0916, 0.1161, 0.1969, 0.0634, 0.0455)))
-game_won <- function(data){
+#'                               Home = c(0.1244, 0.2340, 0.1488, 0.1078, 0.0916, 0.1161, 0.1969, 0.0634, 0.0455)),
+#'                               OBP = obp, First = first, Second = second, Third = third, Home = home,
+#'                               avg_runs_allowed = 4.87)
+game_won <- function(data, OBP, First, Second, Third, Home, avg_runs_allowed){
   # from stackoverflow:
   # https://stackoverflow.com/questions/10276092/to-find-whether-a-column-exists-in-data-frame-or-not
   
@@ -21,22 +29,14 @@ game_won <- function(data){
   ## it must have columns named OBP, First, Second, Third and Home, all of which must contain
   ## values between 0 and 1 (since all values are probabilities)
   ##
-  if(!"OBP" %in% colnames(data)) stop("Must have a column named 'OBP' with the on-base percentage for each player in the batting line up")
-  if(!all(data$OBP <= 1, data$OBP >= 0)) stop("Values of 'OBP' column must be between 0 and 1")
+  if(!all(data$OBP <= 1, data$OBP >= 0)) stop("All values of 'OBP' column must be between 0 and 1")
+  if(!all(data$First <= 1, data$First >= 0)) stop("All values of 'First' column must be between 0 and 1")
+  if(!all(data$Second <= 1, data$Second >= 0)) stop("All values of 'Second' column must be between 0 and 1")
+  if(!all(data$Third <= 1, data$Third >= 0)) stop("All values of 'Third' column must be between 0 and 1")
+  if(!all(data$Home <= 1, data$Home >= 0)) stop("All values of 'Home' column must be between 0 and 1")
   
-  if(!"First" %in% colnames(data)) stop("Must have a column named 'First' with the probabilites that each player in the batting line up makes it to first base")
-  if(!all(data$First <= 1, data$First >= 0)) stop("Values of 'First' column must be between 0 and 1")
-  
-  if(!"Second" %in% colnames(data)) stop("Must have a column named 'Second' with the probabilites that each player in the batting line up makes it to second base")
-  if(!all(data$Second <= 1, data$Second >= 0)) stop("Values of 'Second' column must be between 0 and 1")
-  
-  if(!"Third" %in% colnames(data)) stop("Must have a column named 'Third' with the probabilites that each player in the batting line up makes it to third base")
-  if(!all(data$Third <= 1, data$Third >= 0)) stop("Values of 'Third' column must be between 0 and 1")
-  
-  if(!"Home" %in% colnames(data)) stop("Must have a column named 'Home' with the probabilites that each player in the batting line up makes it home")
-  if(!all(data$Home <= 1, data$Home >= 0)) stop("Values of 'Home' column must be between 0 and 1")
-  
-  if(length(data$OBP)!=9) stop("Baseball lineups have 9 players; length should be equal to 9")
+  if(dim(data)[1]!=9) stop("Baseball lineups have 9 players; length should be equal to 9")
+  if(!is.numeric(avg_runs_allowed)) stop("'avg_runs_allowed' must be numeric")
   
   
   ##
@@ -91,15 +91,22 @@ game_won <- function(data){
   runs_per_game <- sum(runs[runs>0])
   
   ##
+  ## we need to add 1 because our simulation overestimates the runs the team gets, so increasing
+  ## the runs_allowed mitigates this
+  ##
+  avg_runs_allowed <- avg_runs_allowed + 1
+  
+  ##
+  ## https://stackoverflow.com/questions/54017905/extracting-the-complete-decimal-part-of-the-number-in-r/54017906
   ## finally, we calculate if they won based on the average number of runs they let be scored
   ## against them in 2019, so if they scored more runs than that, they won, if they scored less,
   ## they lost and if they scored exactly 5 runs, we randomly choose based on the average they let 
   ## though (since it was 4.87, 13% of the time they win)
   ##
   total_runs <- NA
-  total_runs[runs_per_game < 5] <- 0
-  total_runs[runs_per_game > 5] <- 1
-  total_runs[runs_per_game == 5] <- rbinom(1,1,.13)
+  total_runs[runs_per_game < floor(avg_runs_allowed)] <- 0
+  total_runs[runs_per_game > floor(avg_runs_allowed)] <- 1
+  total_runs[runs_per_game == floor(avg_runs_allowed)] <- rbinom(1, 1, 1-avg_runs_allowed%%1)
   ####
   #### sidenote: we've created this function as if it could be generic to any baseball team, provided 
   ####           the user supplies the correct information, however, the way total_runs is set up is specific
@@ -117,15 +124,22 @@ game_won <- function(data){
 #'
 #' @param data dataframe with 9 rows; Must have columns named "OBP", "First", "Second", "Third" and "Home" in which the values are probabilites;
 #'             the probabilities provided in "First", "Second", "Third" and "Home" should add to 1 for each player
+#' @param OBP column of length 9 that has each player's on-base percentage
+#' @param First column of length 9 that has each player's probability of getting to First base
+#' @param Second column of length 9 that has each player's probability of getting to Second base
+#' @param Third column of length 9 that has each player's probability of getting to Third base
+#' @param Home column of length 9 that has each player's probability of getting to Home base
+#' @param avg_runs_allowed a numeric value that is the average runs allowed by a team per game  
 #'
 #' @return The value returned is a numeric, indicating how many games they won out of 162 in a season
 #' @export
 #'
-#' @examples   season(data.frame(OBP = c(0.354, 0.289, 0.334, 0.310, 0.304, 0.321, 0.283, 0.321, 0.235),
-#'                               First = c(0.7416, 0.6241, 0.7442, 0.7402, 0.7405, 0.7355, 0.7098, 0.7951, 0.8465),
-#'                               Second = c(0.1005, 0.1348, 0.0977, 0.1422, 0.1450, 0.1419, 0.0933, 0.1220, 0.1080),
-#'                               Third = c(0.0335, 0.0071, 0.0093, 0.0098, 0.0229, 0.0065, 0.0000, 0.0195, 0.0000),
-#'                               Home = c(0.1244, 0.2340, 0.1488, 0.1078, 0.0916, 0.1161, 0.1969, 0.0634, 0.0455)))
-season <- function(data){
-  sum(map_dbl(1:162, ~game_won(data)))
+#' @examples   season(data.frame(obp = c(0.354, 0.289, 0.334, 0.310, 0.304, 0.321, 0.283, 0.321, 0.235),
+#'                               first = c(0.7416, 0.6241, 0.7442, 0.7402, 0.7405, 0.7355, 0.7098, 0.7951, 0.8465),
+#'                               second = c(0.1005, 0.1348, 0.0977, 0.1422, 0.1450, 0.1419, 0.0933, 0.1220, 0.1080),
+#'                               third = c(0.0335, 0.0071, 0.0093, 0.0098, 0.0229, 0.0065, 0.0000, 0.0195, 0.0000),
+#'                               home = c(0.1244, 0.2340, 0.1488, 0.1078, 0.0916, 0.1161, 0.1969, 0.0634, 0.0455)),
+#'                    OBP = obp, First = first, Second = second, Third = third, Home = home)
+season <- function(data, OBP, First, Second, Third, Home, avg_runs_allowed){
+  sum(map_dbl(1:162, ~game_won(data, OBP, First, Second, Third, Home, avg_runs_allowed)))
 }

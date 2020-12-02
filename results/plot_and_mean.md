@@ -1,28 +1,25 @@
-Analysis Plot
+Summary of Findings
 ================
 
-``` r
-seasonsim <- read_csv(here("data","seasonsim.csv"))
-```
+## Comparison of the Padres’ 2019 Season with their best hitter injured and uninjured
 
-    ## Parsed with column specification:
-    ## cols(
-    ##   season = col_double()
-    ## )
-
-``` r
-ggplot()+
-  geom_histogram(aes(x = seasonsim$season), fill = "sienna4", color = "yellow") +
-  xlab("Wins in a Season") +
-  ggtitle("Simulation of the Padres 2019 Season")
-```
-
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+### Histogram of the Padres’ 2019 Season with their best hitter injured and taken out of the latter games
 
 ![](plot_and_mean_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
-``` r
-mean(seasonsim$season)
-```
+The Padres won 70 games in the 2019 season. We simulated 250 seasons and
+found an average of 71.188 games won per season. Fernando Tatis Jr. was
+injured during the season and was replaced in the line-up.
 
-    ## [1] 71.412
+Tatis Jr. is the Padres’ best hitter and we wanted to know, if he hadn’t
+been injured, would the Padres have made it to the
+Playoffs?
+
+### Histogram of the Padres’ 2019 Season with their best hitter able to play all 162 games
+
+![](plot_and_mean_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+In order to get into the Playoffs, a team needed 90 wins. Our simulation
+finds if Fernando Tatis Jr. had not been injured, the Padres’ would have
+won an average 71.172 games. It seems that even if their best hitter had
+not been injuired, they would not have made it to the Playoffs in 2019.
