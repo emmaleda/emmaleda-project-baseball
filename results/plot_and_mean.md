@@ -25,4 +25,4 @@ ggplot()+
 mean(seasonsim$season)
 ```
 
-    ## [1] 70.856
+    ## [1] 70.992
