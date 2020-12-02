@@ -1,238 +1,131 @@
 
-
-### 1. get_hit
-#' Simulates if a player got a hit
+#' Did They Win the Game?
 #'
-#' @param OBP double, the On-base Percentage of a player
+#' @param data dataframe with 9 rows; Must have columns named "OBP", "First", "Second", "Third" and "Home" in which the values are probabilites;
+#'             the probabilities provided in "First", "Second", "Third" and "Home" should add to 1 for each player
 #'
-#' @return 0 or 1, if a player gets on base a 1 is returned. if they get out a 0 is returned
+#' @return The value is a double, either zero or one, in which zero indicates they lost and one indicates they won
 #' @export
 #'
-#' @examples get_hit(.300)
-get_hit <- function(OBP) {
-  rbinom(1,1, OBP)
-}
-?get_hit
-
-### 2. runs
-#' Runs scored in an Inning
-#'
-#' @param number_hits an integer, the sum of all the bases each player made it to during an Inning
-#'
-#' @return an integer, the calculated number of runs scored for the team during a half-Inning
-#' @export
-#'
-#' @examples runs(3)
-#' runs(4)
-runs <- function(number_hits){
-  if(number_hits < 4){
-    runs = 0
-  }
-  #### if less than four hits occur in an inning then no runs score
-  else{
-    runs = number_hits - 3
-    ### if more than three hits occur in an inning then the number of runs
-    ### scored is that number of hits minus the three runners who occupy
-    ### the three bases (first, second, third)
-  }
-}
-?runs
-
-### 2.5 import the data
-PadresBatting <- readr::read_csv(here::here("data", "PadresBatting.csv"))
-
-
-### 3. base_reached
-### If a player doesn't get an out, which base do they reach?
-#' Which base does a player who obtains a hit reach?
-#'
-#' @param player an integer from 1 to 9 which indicates which player to retrieve statistics about from the PadresBatting.csv data file
-#'
-#' @return 1, 2, 3 or 4 indicating which base a player made it to
-#' @export
-#'
-#' @examples base_reached(1)
-#' base_reached(2)
-base_reached <- function(player){
-  ### this code I largely borrowed from homework 4 02_random-numbers
-  ### since the probability a player makes it to first, second, third 
-  ### or home is mutually exclusing
-  values <- c(1, 2, 3, 4)
-  probs <- c(PadresBatting$First[player], PadresBatting$Second[player],
-             PadresBatting$Third[player], PadresBatting$Home[player])
-  cumulative_probs <- cumsum(probs)
+#' @examples game_won(data.frame(OBP = c(0.354, 0.289, 0.334, 0.310, 0.304, 0.321, 0.283, 0.321, 0.235),
+#'                               First = c(0.7416, 0.6241, 0.7442, 0.7402, 0.7405, 0.7355, 0.7098, 0.7951, 0.8465),
+#'                               Second = c(0.1005, 0.1348, 0.0977, 0.1422, 0.1450, 0.1419, 0.0933, 0.1220, 0.1080),
+#'                               Third = c(0.0335, 0.0071, 0.0093, 0.0098, 0.0229, 0.0065, 0.0000, 0.0195, 0.0000),
+#'                               Home = c(0.1244, 0.2340, 0.1488, 0.1078, 0.0916, 0.1161, 0.1969, 0.0634, 0.0455)))
+game_won <- function(data){
+  # from stackoverflow:
+  # https://stackoverflow.com/questions/10276092/to-find-whether-a-column-exists-in-data-frame-or-not
   
-  u <- runif(1)
-  ### generates one randome number between 0 and 1
-  values[findInterval(u, cumulative_probs) + 1] 
-  ### figures out where that u falls within the cumulative
-  ### probability and returns 1, 2, 3, or 4 based on what u is
-}
-?base_reached
-
-### 4. half_inning
-#' Simulates the batting order of the Padres for a half-inning
-#'
-#' @param starting_player an integer, which player begins the Inning at bat
-#'
-#' @return a list with values, hits = total hits acheived by each player, 
-#' last_player = the player who hit right before the inning ended, 
-#' and runs = the total runs scored by all the players
-#' @export
-#'
-#' @examples half_inning(1)
-#' half_inning(9)
-half_inning <- function(starting_player) {
-  number_hits <- rep(0,9)
-  ### a list to store how many hits each player scores
-  outs = 0 
-  ### number of outs the team scores, starts at 0 outs for each inning
-  n_players <- 9
-  ### number of players in the lineup, will always be 9
-  for(i in starting_player:n_players){
-    ### the for loop begins at the starting player, at the beginning of the
-    ### game, we'll start with the first player (Tatis Jr.!)
-    ### but as the game continues, we'll end at different players
-    ### so we'll start where we ended, which is why 'starting_player'
-    ### is an option to fill in
-    if(outs < 3){
-      hit <- get_hit(PadresBatting$OBP[i])
-      ### we need to stop running the simulation once we've made 3 outs
-      ### so the function stops once 3 outs have been reached
-      if(hit == 1){
-        hit <- base_reached(i)
-        ### if the player does get a hit, base_reached(player) will determine
-        ### which base they make it to
-      }
-      number_hits[i] <- number_hits[i] + hit
-      ### here, we record if a player achieves a hit
-      ### by adding the previous number of hits (starts at 0)
-      ### to whether they get a hit or not
-      ### we add the previous number of hits just in case
-      ### a player hits more than once per inning
-      if(hit == 0){
-        outs = outs + 1
-        ### records how many outs for the team
-      }
-      player <- i
-      ### records the number of the last player who hits
-      ### for the next inning, we'll want to start at the next player
-      ### so player + 1
-    }
-  }
-  if(player == 9){
-    ### the previous loop with end once we reach player 9, but that's not
-    ### how baseball works since we'd restart with player 1 if player 9 hit
-    ### and they hadn't reached 3 outs yet; so, if the player is 9 the 
-    ### exact same loop as above runs except that it starts at 1
-    for(i in 1:n_players){
-      ### starts at the first player (Tatis Jr.!)
-      if(outs < 3){
-        hit <- get_hit(PadresBatting$OBP[i])
-        if(hit == 1){
-          hit <- base_reached(i)
-        }
-        number_hits[i] <- number_hits[i] + hit
-        if(hit == 0){
-          outs = outs + 1
-        }
-        player <- i
-      }
-    }  
-  }
-  hits = sum(unlist(number_hits))
-  hits_and_player <- data.frame(hits = hits, 
-                                last_player = player,
-                                runs = runs(hits))
-  return(hits_and_player)
-}
-?half_inning
-
-
-### 5. next_player
-#' Iterate to the Next Player in the Lineup
-#'
-#' @param last_player an integer from 1 to 9 corresponding with placement in the starting lineup
-#'
-#' @return if last_player is 9, it returns 1 otherwise it returns last_player + 1
-#' @export
-#'
-#' @examples next_player(1)
-#' next_player(9)
-next_player <- function(last_player){
-  next_player <- 0
-  ### initialize a variable called "next_player" and set it to 0
-  if(last_player < 9){
-    next_player = last_player + 1
-    ### as long as the player entered isn't 9, the next player will
-    ### be the last_player + 1
-  } else {next_player = 1}
-  ### if the last player is player 9, then the next player up is 
-  ### player 1, not player 10 (who doesn't exist)
-  return(next_player)
-}
-?next_player
-
-### 6. game
-#' Simulates One Game for the Padres
-#'
-#' @return an integer, 0 if they lost the game and 1 if they won
-#' @export
-#'
-#' @examples game()
-game <- function() {
-  first_inning   <- half_inning(starting_player = 1)
-  ### the first player will always be player 1 (in the Padres case, Tatis Jr.)
-  second_inning  <- half_inning(starting_player = next_player(first_inning$last_player))
-  ### the initial player for the second inning will be the player who comes after
-  ### the player who hit last in the first inning, which is what the function
-  ### "next_player" computes
-  third_inning   <- half_inning(starting_player = next_player(second_inning$last_player))
-  ### and so on
-  fourth_inning  <- half_inning(starting_player = next_player(third_inning$last_player))
-  fifth_inning   <- half_inning(starting_player = next_player(fourth_inning$last_player))
-  sixth_inning   <- half_inning(starting_player = next_player(fifth_inning$last_player))
-  seventh_inning <- half_inning(starting_player = next_player(sixth_inning$last_player))
-  eighth_inning  <- half_inning(starting_player = next_player(seventh_inning$last_player))
-  nineth_inning  <- half_inning(starting_player = next_player(eighth_inning$last_player))
+  ## 
+  ## First, check that the data provided by the function user fits the correct qualifications:
+  ## it must have columns named OBP, First, Second, Third and Home, all of which must contain
+  ## values between 0 and 1 (since all values are probabilities)
+  ##
+  if(!"OBP" %in% colnames(data)) stop("Must have a column named 'OBP' with the on-base percentage for each player in the batting line up")
+  if(!all(data$OBP <= 1, data$OBP >= 0)) stop("Values of 'OBP' column must be between 0 and 1")
   
-  total_game_runs <-
-    first_inning$runs + second_inning$runs + third_inning$runs + fourth_inning$runs + fifth_inning$runs +
-    sixth_inning$runs + seventh_inning$runs + eighth_inning$runs + nineth_inning$runs
-  ### "total_game_runs" adds up all of the runs that the Padres scored each inning
-  won <- 0
-  ### initialize an empty list
-  if (total_game_runs >= 6) {
-    ### if the Padres scored 5 or more runs, they win the game
-    won = 1
-  } else if (total_game_runs == 5) {
-    ### if the Padres score exactly 4 runs, they "win" 13% of the time
-    ### as calculated by the binomial below
-    won = rbinom(1, 1, 0.13)
-  } else {
-    ### if they score less than 4 runs, they lose the game
-    won = 0
-  }
-  ### ultimately, game() returns a 1 if the Padres won and a
-  ### 0 if they lost
-  return(unlist(won))
+  if(!"First" %in% colnames(data)) stop("Must have a column named 'First' with the probabilites that each player in the batting line up makes it to first base")
+  if(!all(data$First <= 1, data$First >= 0)) stop("Values of 'First' column must be between 0 and 1")
+  
+  if(!"Second" %in% colnames(data)) stop("Must have a column named 'Second' with the probabilites that each player in the batting line up makes it to second base")
+  if(!all(data$Second <= 1, data$Second >= 0)) stop("Values of 'Second' column must be between 0 and 1")
+  
+  if(!"Third" %in% colnames(data)) stop("Must have a column named 'Third' with the probabilites that each player in the batting line up makes it to third base")
+  if(!all(data$Third <= 1, data$Third >= 0)) stop("Values of 'Third' column must be between 0 and 1")
+  
+  if(!"Home" %in% colnames(data)) stop("Must have a column named 'Home' with the probabilites that each player in the batting line up makes it home")
+  if(!all(data$Home <= 1, data$Home >= 0)) stop("Values of 'Home' column must be between 0 and 1")
+  
+  if(length(data$OBP)!=9) stop("Baseball lineups have 9 players; length should be equal to 9")
+  
+  
+  ##
+  ## combining the most hits ever achieved with the most walks ever achieved gives us 
+  ## 72, the maximum number of hits a team will get in one game
+  ##
+  most_bb_and_h <- 72
+  the_uniform <- runif(most_bb_and_h)
+  
+  ##
+  ## Repeat OBP & probs so the length is equal to 72
+  ##
+  the_OBPs <- rep(data$OBP, most_bb_and_h/9)
+  the_probs <- data.frame(First = rep(data$First, most_bb_and_h/9),
+                          Second = rep(data$Second, most_bb_and_h/9),
+                          Third = rep(data$Third, most_bb_and_h/9),
+                          Home = rep(data$Home, most_bb_and_h/9))
+  
+  ##
+  ## Generate the base each player in the iteration got to, even if they got an out instead of a hit
+  ##
+  the_bases <- map_int(1:most_bb_and_h, ~sample(1:4, 1, replace = TRUE, prob = the_probs[.x,]))
+  ##
+  
+  ## 
+  ## multiply the logical - if the player got a hit - by the base they got to so we end up with
+  ## 0's if they were out and the base they made it to if not
+  ##
+  out_or_base <- (the_uniform<the_OBPs)*the_bases
+  
+  ##
+  ## subset our data so that we truncate once we get to 27 outs, since we have 3 outs per inning
+  ## and 9 innings - 27 outs will end the game
+  ##
+  outs27 <- which(cumsum(out_or_base==0) == 27)[1]
+  batting_until_game <- out_or_base[1:outs27]
+  
+  ##
+  ## separate the data into innings - every 3 0's is an inning
+  ##
+  innings <- map_int(seq(3, 27, by = 3), ~which(cumsum(batting_until_game==0) == .x)[1])
+  
+  ##
+  ## sum up the hits per inning and subtract 3 to get runs scored per innings 
+  ##
+  runs <- map2_dbl(.x = c(1, innings[-9]), .y = innings, ~sum(batting_until_game[.x:.y])-3)
+  
+  ##
+  ## the way we set this up, we get negative values for runs, so we subset runs by runs that 
+  ## are greater than zero, then add them up to get total runs per game
+  ##
+  runs_per_game <- sum(runs[runs>0])
+  
+  ##
+  ## finally, we calculate if they won based on the average number of runs they let be scored
+  ## against them in 2019, so if they scored more runs than that, they won, if they scored less,
+  ## they lost and if they scored exactly 5 runs, we randomly choose based on the average they let 
+  ## though (since it was 4.87, 13% of the time they win)
+  ##
+  total_runs <- NA
+  total_runs[runs_per_game < 5] <- 0
+  total_runs[runs_per_game > 5] <- 1
+  total_runs[runs_per_game == 5] <- rbinom(1,1,.13)
+  ####
+  #### sidenote: we've created this function as if it could be generic to any baseball team, provided 
+  ####           the user supplies the correct information, however, the way total_runs is set up is specific
+  ####           to the Padres since them allowing 4.87 runs on average to be scored per game is a stat that 
+  ####           only applies to them
+  ####
+  
+  return(total_runs)
 }
 
-
-### 7. season
-#' Simulates One Season (based on 2019 stats) for the Padres
+##
+## to calculate a season, we run game_won 162 times since there are 162 games in a season
+##
+#' How Many Games Did They Win in a Season?
 #'
-#' @return an integer, the number of games won
+#' @param data dataframe with 9 rows; Must have columns named "OBP", "First", "Second", "Third" and "Home" in which the values are probabilites;
+#'             the probabilities provided in "First", "Second", "Third" and "Home" should add to 1 for each player
+#'
+#' @return The value returned is a numeric, indicating how many games they won out of 162 in a season
 #' @export
 #'
-#' @examples season()
-season <- function(){
-  finalgamescore <- rep(0, 162)
-  for(i in 1:162){
-    ### save the result of game() in a vector names "finalgamescore"
-    finalgamescore[i] <- game()
-  }
-  ### we sum up all of the values in the vector to get the total
-  ### games won in a season
-  return(sum(finalgamescore))
+#' @examples   season(data.frame(OBP = c(0.354, 0.289, 0.334, 0.310, 0.304, 0.321, 0.283, 0.321, 0.235),
+#'                               First = c(0.7416, 0.6241, 0.7442, 0.7402, 0.7405, 0.7355, 0.7098, 0.7951, 0.8465),
+#'                               Second = c(0.1005, 0.1348, 0.0977, 0.1422, 0.1450, 0.1419, 0.0933, 0.1220, 0.1080),
+#'                               Third = c(0.0335, 0.0071, 0.0093, 0.0098, 0.0229, 0.0065, 0.0000, 0.0195, 0.0000),
+#'                               Home = c(0.1244, 0.2340, 0.1488, 0.1078, 0.0916, 0.1161, 0.1969, 0.0634, 0.0455)))
+season <- function(data){
+  sum(map_dbl(1:162, ~game_won(data)))
 }
