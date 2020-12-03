@@ -17,4 +17,4 @@ The final result and graph can be viewed [results/plot_and_mean.md](https://gith
 
 ## Presentation
 
-Our PowerPoint can be found [here](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/Baseball%20Simulation%20Presentation.pdf).
+Our PowerPoint can be found under [presentation/Baseball Simulation Presentation.pdf](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/presentation/Baseball%20Simulation%20Presentation.pdf).
