@@ -14,3 +14,7 @@ The primary objective of the project is to simulate the 2019 season of the San D
 The code to run the simulation is in [results/results.R](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/results/results.R), the code to view the functions that simulate the Season is in [R/simulation-functions.R](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/R/simulation-functions.R)
 
 The final result and graph can be viewed [results/plot_and_mean.md](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/results/plot_and_mean.md)
+
+## Presentation
+
+Our PowerPoint can be found [here](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/Baseball%20Simulation%20Presentation.pdf).
