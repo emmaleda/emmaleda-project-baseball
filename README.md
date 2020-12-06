@@ -7,7 +7,7 @@ Emma Grossman and Leah Marcus
 
 ## Baseball
 
-The primary objective of the project is to create an accurate simulation of the 2019 season of the San Diego Padres based on their average batting lineup. Our secondary objective is to simulate their 2019 season as if their best hitter, Fernando Tatis Jr., had not been injured halfway through and replaced with a worse hitter. We want to see if having their star player thoughout the 2019 season would have allowed them to make it to the playoffs.
+The primary objective of the project is to create an accurate simulation of the 2019 season of the San Diego Padres based on their average batting lineup. Our secondary objective is to simulate their 2019 season as if their best hitter, Fernando Tatis Jr., had not been injured halfway through and replaced with a worse hitter. We want to see if having their star player thoughout the 2019 season would have improved their record and possibly allowed them to make it to the playoffs.
 
 ## Organization
 
