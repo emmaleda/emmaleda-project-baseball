@@ -23,4 +23,4 @@ The functions created for this simulation are `game_won(data, OBP, First, Second
 
 Our PowerPoint can be found under [reports/Baseball Simulation Presentation.pdf](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/reports/Baseball%20Simulation%20Presentation.pdf).
 
-Our written report can be found [reports/Final Project Report.pdf](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/reports/Final%20Project%20Report.pdf).
+Our written report can be found under [reports/Final Project Report.pdf](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/reports/Final%20Project%20Report.pdf).
