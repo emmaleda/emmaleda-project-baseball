@@ -3,7 +3,7 @@ Summary of Findings
 
 ## Comparison of the Padres’ 2019 Season with their best hitter injured and uninjured
 
-### Histogram of the Padres’ 2019 Season with their best hitter injured and taken out of the latter games
+### Histogram of the Padres’ 2019 Season with their best hitter injured and taken out of the second half of games in the season
 
 ![](plot_and_mean_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
