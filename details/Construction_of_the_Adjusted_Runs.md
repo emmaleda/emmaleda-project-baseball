@@ -5,10 +5,10 @@ Leah Marcus
 
 ## Adjustments to the Simulation of the Padres 2019 Season
 
-`  ` Several adjustments had to be made to the simulation in order to
+  Several adjustments had to be made to the simulation in order to
 make it an accurate reflection of the San Diego Padres 2019 season.
 
-`  ` The Padres pitchers gave up a total of 789 runs during the 2019
+  The Padres pitchers gave up a total of 789 runs during the 2019
 season, for an average of 4.87 runs given up per game. However, using
 this value resulted in an overestimation of the average number of wins
 per season of about 15 wins – 85 wins rather than the true number of
@@ -27,7 +27,7 @@ we decided to focus on cleaning up our code and documentation, rather
 than finding a way to include these players. This likely partially
 explains the overestimation of our model.
 
-`  ` It is also important to point out that our simulation is still an
+  It is also important to point out that our simulation is still an
 oversimplification of how a baseball game would actually be played. We
 assume that, once a player reaches whatever base of the type of hit (or
 walk) they achieved, they stay there until a later player gets a
@@ -45,7 +45,7 @@ bases. However, in an actual game, the first batter could have scored on
 the double, but in our simulation, there is no guarantee that the next
 batter(s) do not make outs, so he would not score.
 
-`  ` Finally, there is evidence that the Padres were an [especially
+  Finally, there is evidence that the Padres were an [especially
 poor](https://www.fangraphs.com/leaders.aspx?pos=all&stats=bat&lg=all&qual=0&type=8&season=2019&month=0&season1=2019&ind=0&team=0,ts&rost=0&age=0&filter=&players=0&startdate=2019-01-01&enddate=2019-12-31&sort=17,d)
 base-running team in 2019. This means that while the Padres were a
 better hitting team in our simulation than their record suggests, they
@@ -56,7 +56,7 @@ lose more games. This is good evidence that our model leads to
 over-estimating with the hitting simulation than under-estimating
 baserunning.
 
-`  ` We were able to approve the accuracy of our simulation by adding
+  We were able to improve the accuracy of our simulation by adding
 one run to the cutoff of runs scored that the Padres must achieve to
 earn a win. After considering the ways in which our simulation might not
 reflect a true baseball game, this adjustment makes sense.
