@@ -7,7 +7,7 @@ Emma Grossman and Leah Marcus
 
 ## Baseball
 
-The primary objective of the project is to simulate the 2019 season of the San Diego Padres based on a simulation of their average batting lineup. Our secondary objective is to compare our simulation of the Padres' 2019 Season to a simulation in which their best hitter, Fernando Tatis Jr., was not injured halfway through the 2019 season and see if the Padres would have made it to the playoffs if he was able to play the entire season. To simulate this, we generated many random variables from a uniform distribution and compared those to player's OBP: this determined if they made an out or reached base; we then simulated the base each player made it to and multiplied these vectors together to get 0's if a player got out and 1, 2, 3, or 4 representing the base they made it to if they got a hit. We calculated the hits obtained per inning, translated that into the runs score, and summed up the total runs scored in the game to compare to their adjusted average runs allowed in the 2019 season to determine if they won or lost. Then, we repeated this 162 times to represent a season and simulated 250 seasons to come up with the average games won for each of the two objectives.
+The primary objective of the project is to create an accurate simulation of the 2019 season of the San Diego Padres based on their average batting lineup. Our secondary objective is to simulate their 2019 season as if their best hitter, Fernando Tatis Jr., had not been injured halfway through and replaced with a worse hitter. We want to see if having their star player thoughout the 2019 season would have allowed them to make it to the playoffs.
 
 ## Organization
 
