@@ -13,7 +13,7 @@ The primary objective of the project is to simulate the 2019 season of the San D
 
 Required packages are `tidyverse` and `here`.
 
-The code to view the functions that simulate the Season is in [R/simulation-functions.R](R/simulation-functions.R) and this file must be run first. To run the simulation, head to [results/results.R](results/results.R); the code in this file takes a while to run. 
+The code to view the functions that simulate the Season is in [R/simulation-functions.R](R/simulation-functions.R) and this file must be run first. To run the simulation, head to [results/results.R](results/results.R); the code in this file takes a while to run (approx. 12 minutes - we did try alternate variations of code to speed this up, but ultimately this was the fastest when timed with `bench::mark`). 
 
 The final results and graphs can be viewed [results/plot_and_mean.md](results/plot_and_mean.md).
 
