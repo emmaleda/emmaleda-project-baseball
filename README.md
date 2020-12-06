@@ -13,14 +13,14 @@ The primary objective of the project is to simulate the 2019 season of the San D
 
 Required packages are `tidyverse` and `here`.
 
-The code to view the functions that simulate the Season is in [R/simulation-functions.R](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/R/simulation-functions.R) and this file must be run first. To run the simulation, head to [results/results.R](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/results/results.R); the code in this file takes a while to run. 
+The code to view the functions that simulate the Season is in [R/simulation-functions.R](R/simulation-functions.R) and this file must be run first. To run the simulation, head to [results/results.R](results/results.R); the code in this file takes a while to run. 
 
-The final results and graphs can be viewed [results/plot_and_mean.md](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/results/plot_and_mean.md)
+The final results and graphs can be viewed [results/plot_and_mean.md](results/plot_and_mean.md).
 
-The functions created for this simulation are `game_won(data, OBP, First, Second, Third, Home, avg_runs_allowed)` and `season(data, OBP, First, Second, Third, Home, avg_runs_allowed)`. In the file [results/results.R](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/results/results.R), we have provided the data frame and appropriate arguments for the Padres' 2019 season, but this can also be used to simulate a game for another team, as long as the necessary statistics have been provided. `game_won()` should be used to simulate whether a team won or lost a game and `season()` should be used to simulate games 162 times for the desired team. 
+The functions created for this simulation are `game_won(data, OBP, First, Second, Third, Home, avg_runs_allowed)` and `season(data, OBP, First, Second, Third, Home, avg_runs_allowed)`. In the file [results/results.R](results/results.R), we have provided the data frame and appropriate arguments for the Padres' 2019 season, but this can also be used to simulate a game for another team, as long as the necessary statistics have been provided. `game_won()` should be used to simulate whether a team won or lost a game and `season()` should be used to simulate games 162 times for the desired team. 
 
 ## Presentation & Report
 
-Our PowerPoint can be found under [presentation/Baseball Simulation Presentation.pdf](https://github.com/ST541-Fall2020/emmaleda-project-baseball/blob/master/presentation/Baseball%20Simulation%20Presentation.pdf).
+Our PowerPoint can be found under [reports/Baseball Simulation Presentation.pdf](reports/Baseball Simulation Presentation.pdf).
 
-Our written report can be found ...
+Our written report can be found [reports/Final Project Report.pdf](reports/Final Project Report.pdf).
