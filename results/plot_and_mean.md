@@ -22,4 +22,5 @@ playoffs?
 In order to get into the playoffs, a team needed 90 wins. Our simulation
 finds if Fernando Tatis Jr. had not been injured, the Padres’ would have
 won an average 75.108 games. It seems that even if their best hitter had
-not been injuired, they would not have made it to the playoffs in 2019.
+not been injuired, they would not have made it to the playoffs in 2019, although 
+they did reach the playoffs in a few of the simulated seasons.
