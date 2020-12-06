@@ -1,18 +1,18 @@
 
 devtools::load_all()
 devtools::document()
+devtools::test()
 
 library(tidyverse)
 library(here)
 
 PadresBatting <- readr::read_csv(here::here("data", "PadresBatting.csv"))
-seasonsim <- data.frame(season = map_dbl(1:250, ~season(PadresBatting, OBP = OBP,
-                                                        First = First, Second = Second,
-                                                        Third = Third, Home = Home,
+PadresBatting_FTJ <- readr::read_csv(here::here("data", "PadresBatting_FTJ.csv"))
+
+seasonsim <- data.frame(season = map_dbl(1:250, ~season(PadresBatting,
                                                         avg_runs_allowed = 4.87)))
-seasonsim_FTJ <- data.frame(season = map_dbl(1:250, ~season(PadresBatting, OBP = OBPFTJ,
-                                                            First = FirstFTJ, Second = SecondFTJ,
-                                                            Third = ThirdFTJ, Home = HomeFTJ,
+
+seasonsim_FTJ <- data.frame(season = map_dbl(1:250, ~season(PadresBatting_FTJ, 
                                                             avg_runs_allowed = 4.87)))
 
 write_csv(seasonsim, here("data","seasonsim.csv"))

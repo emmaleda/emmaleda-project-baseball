@@ -8,7 +8,7 @@ Summary of Findings
 ![](plot_and_mean_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 The Padres won 70 games in the 2019 season. We simulated 250 seasons and
-found an average of 70.736 games won per season. Fernando Tatis Jr. was
+found an average of 71.08 games won per season. Fernando Tatis Jr. was
 injured during the season and was replaced in the line-up.
 
 Tatis Jr. is the Padres’ best hitter and we wanted to know, if he hadn’t
@@ -21,5 +21,5 @@ playoffs?
 
 In order to get into the playoffs, a team needed 90 wins. Our simulation
 finds if Fernando Tatis Jr. had not been injured, the Padres’ would have
-won an average of 71.092 games. It seems that even if their best hitter had
+won an average 75.108 games. It seems that even if their best hitter had
 not been injuired, they would not have made it to the playoffs in 2019.
