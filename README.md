@@ -17,7 +17,7 @@ The code to view the functions that simulate the Season is in [R/simulation-func
 
 The final results and graphs can be viewed [results/plot_and_mean.md](results/plot_and_mean.md).
 
-The functions created for this simulation are `game_won(data, OBP, First, Second, Third, Home, avg_runs_allowed)` and `season(data, OBP, First, Second, Third, Home, avg_runs_allowed)`. In the file [results/results.R](results/results.R), we have provided the data frame and appropriate arguments for the Padres' 2019 season, but this can also be used to simulate a game for another team, as long as the necessary statistics have been provided. `game_won()` should be used to simulate whether a team won or lost a game and `season()` should be used to simulate 162 games for the desired team. 
+The functions created for this simulation are `game_won(data, avg_runs_allowed)` and `season(data, avg_runs_allowed)`. In the file [results/results.R](results/results.R), we have provided the data frame and appropriate arguments for the Padres' 2019 season, but this can also be used to simulate a game for another team, as long as the necessary statistics have been provided. `game_won()` should be used to simulate whether a team won or lost a game and `season()` should be used to simulate 162 games for the desired team. 
 
 ## Presentation & Report
 
